@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="pt-PT">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#081b16" />
+  <meta name="description" content="JogaBonitoTuga: encontra jogos de futebol, futsal, basquetebol e padel perto de ti. Junta-te a uma equipa ou organiza o teu jogo." />
+  <title>JogaBonitoTuga — O próximo jogo começa aqui.</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+  <script src="config.js" defer></script>
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <div class="announcement"><span class="pulse-dot"></span> A tua equipa está à tua espera. <a href="#jogos">Descobre jogos disponíveis <span aria-hidden="true">↗</span></a></div>
+  <header class="site-header" id="topo">
+    <nav class="nav container" aria-label="Navegação principal">
+      <a class="logo" href="#topo" aria-label="JogaBonitoTuga, início"><span class="logo-mark">✳</span><span>Joga<span class="logo-contrast">Bonito</span><span class="logo-tuga">Tuga<span class="logo-dot">.</span></span></span></a>
+      <button class="menu-toggle" id="menuToggle" type="button" aria-expanded="false" aria-controls="navLinks" aria-label="Abrir menu">☰</button>
+      <div class="nav-links" id="navLinks"><a href="#modalidades">Modalidades</a><a href="#jogos">Encontrar jogos</a><a href="#como-funciona">Como funciona</a><a href="#perguntas">FAQ</a></div>
+      <button class="btn btn-small btn-outline nav-cta" type="button" data-open-chat>Fala connosco <span aria-hidden="true">↗</span></button>
+    </nav>
+  </header>
+  <main>
+    <section class="hero">
+      <div class="hero-glow" aria-hidden="true"></div>
+      <div class="container hero-layout">
+        <div class="hero-copy">
+          <div class="eyebrow"><span class="eyebrow-line"></span> A COMUNIDADE DESPORTIVA É AQUI</div>
+          <h1>Menos desculpas.<br />Mais <span class="highlight">jogo<span class="hero-period">.</span></span></h1>
+          <p class="hero-desc">Falta-te malta para jogar? Encontra partidas perto de ti, reserva o teu lugar e entra em campo. Futebol, futsal, basquetebol e padel — tudo num só sítio.</p>
+          <div class="hero-actions"><a class="btn btn-primary" href="#jogos">Encontrar um jogo <span aria-hidden="true">↗</span></a><button class="btn btn-dark-outline" type="button" id="openCreate">Organizar um jogo <span aria-hidden="true">＋</span></button></div>
+          <div class="hero-proof"><div class="avatar-stack"><span>⚽</span><span>🏀</span><span>🎾</span><span>🏆</span></div><p>O teu próximo grande jogo<br /><strong>começa com um clique.</strong></p></div>
+        </div>
+        <div class="hero-visual" aria-label="Jogador em campo de futebol">
+          <div class="hero-photo"></div><div class="image-shade"></div>
+          <div class="floating-label top-label"><span class="green-circle">↗</span><span><strong>Joga mais.</strong><small>Complica menos.</small></span></div>
+          <div class="floating-label bottom-label"><span class="match-ball">⚽</span><span><small>O PRÓXIMO JOGO</small><strong>É contigo.</strong></span><span class="label-arrow">↗</span></div>
+          <div class="hero-stamp" aria-hidden="true">BORA<br />JOGAR <span>↗</span></div>
+        </div>
+      </div>
+      <div class="hero-bottom container"><span>01 / A COMUNIDADE</span><span>DESCE PARA EXPLORAR ↓</span></div>
+    </section>
+    <div class="marquee" aria-label="Futebol, futsal, basquetebol e padel"><div class="marquee-track">FUTEBOL <span>✳</span> FUTSAL <span>✳</span> BASQUETEBOL <span>✳</span> PADEL <span>✳</span> FUTEBOL <span>✳</span> FUTSAL <span>✳</span> BASQUETEBOL <span>✳</span> PADEL <span>✳</span></div></div>
+    <section class="section modalities" id="modalidades">
+      <div class="container"><div class="section-top"><div><div class="section-kicker">ESCOLHE A TUA CENA</div><h2>Há sempre um jogo<br /><em>à tua medida.</em></h2></div><p>Seja qual for a modalidade, há lugar para mais um. Escolhe a tua e começa a jogar.</p></div>
+        <div class="sports-grid">
+          <button class="sport-card sport-football" type="button" data-sport="Futebol"><span class="sport-icon">⚽</span><span class="sport-bottom"><span><small>01 / 11 × 11</small><strong>Futebol</strong></span><span class="sport-arrow">↗</span></span></button>
+          <button class="sport-card sport-futsal" type="button" data-sport="Futsal"><span class="sport-icon">🥅</span><span class="sport-bottom"><span><small>02 / 5 × 5</small><strong>Futsal</strong></span><span class="sport-arrow">↗</span></span></button>
+          <button class="sport-card sport-basket" type="button" data-sport="Basquetebol"><span class="sport-icon">🏀</span><span class="sport-bottom"><span><small>03 / 5 × 5</small><strong>Basquetebol</strong></span><span class="sport-arrow">↗</span></span></button>
+          <button class="sport-card sport-padel" type="button" data-sport="Padel"><span class="sport-icon">🎾</span><span class="sport-bottom"><span><small>04 / 2 × 2</small><strong>Padel</strong></span><span class="sport-arrow">↗</span></span></button>
+        </div>
+      </div>
+    </section>
+    <section class="section games" id="jogos">
+      <div class="container"><div class="section-top games-heading"><div><div class="section-kicker">BORA A JOGO</div><h2>O próximo jogo<br />está <em>mesmo aqui.</em></h2></div><p>Encontra malta com a mesma vontade de jogar que tu. Filtra, escolhe e reserva o teu lugar.</p></div>
+      <div class="search-panel"><label class="filter-field"><span>MODALIDADE</span><select id="sportFilter"><option value="">Todas as modalidades</option><option>Futebol</option><option>Futsal</option><option>Basquetebol</option><option>Padel</option></select></label><label class="filter-field"><span>LOCALIZAÇÃO</span><select id="cityFilter"><option value="">Todas as cidades</option><option>Porto</option><option>Lisboa</option><option>Braga</option><option>Coimbra</option></select></label><label class="filter-field"><span>QUANDO</span><select id="dateFilter"><option value="">Qualquer dia</option><option value="today">Hoje</option><option value="tomorrow">Amanhã</option><option value="week">Próximos 7 dias</option></select></label><button class="btn btn-primary search-btn" type="button" id="applyFilters">Ver jogos <span aria-hidden="true">↗</span></button></div>
+      <div class="games-meta"><span id="gamesCount">Jogos disponíveis</span><span class="demo-notice">Jogos de demonstração · liga ao n8n para dados reais</span></div>
+      <div class="game-grid" id="gamesList" aria-live="polite"></div>
+      <div class="games-footer"><p>Não encontraste o jogo ideal?</p><button type="button" class="text-link" id="openCreateBottom">Cria o teu próprio jogo ↗</button></div>
+      </div>
+    </section>
+    <section class="how section" id="como-funciona"><div class="container"><div class="section-kicker">É MESMO SIMPLES</div><div class="how-heading"><h2>Três passos.<br /><em>Um grande jogo.</em></h2><p>Menos tempo a combinar no grupo. Mais tempo a fazer aquilo de que gostas.</p></div><div class="steps"><div class="step"><div class="step-number">01 <span>↗</span></div><div class="step-symbol">⌕</div><h3>Encontra o teu jogo</h3><p>Escolhe o desporto, a cidade e o dia. Vê os jogos disponíveis à tua volta.</p></div><div class="step"><div class="step-number">02 <span>↗</span></div><div class="step-symbol">✓</div><h3>Garante o teu lugar</h3><p>Inscreve-te em poucos segundos. A organização recebe o teu pedido.</p></div><div class="step"><div class="step-number">03 <span>↗</span></div><div class="step-symbol">⚡</div><h3>Entra em campo</h3><p>Prepara o equipamento, aparece a horas e faz o que sabes melhor: joga!</p></div></div></div></section>
+    <section class="cta-section"><div class="container cta-inner"><div><div class="cta-tag">O TEU JOGO. AS TUAS REGRAS.</div><h2>Não esperes<br />pelo <em>apito.</em></h2><p>Junta os amigos, lança o desafio e cria a próxima grande partida.</p><button class="btn btn-dark" id="openCreateCta" type="button">Organizar um jogo <span aria-hidden="true">↗</span></button></div><div class="cta-art" aria-hidden="true"><span>⚽</span><div class="orbit orbit-one"></div><div class="orbit orbit-two"></div></div></div></section>
+    <section class="section faq" id="perguntas"><div class="container faq-layout"><div><div class="section-kicker">TENS DÚVIDAS?</div><h2>Fica tudo<br /><em>esclarecido.</em></h2><p>Não encontraste a resposta? Estamos a um clique de distância.</p><button class="btn btn-outline-dark" type="button" data-open-chat>Falar com o suporte ↗</button></div><div class="faq-list"><details><summary>Como me inscrevo num jogo? <span>＋</span></summary><p>Escolhe uma partida na secção de jogos, clica em “Quero jogar” e preenche os teus dados. O pedido é enviado à organização quando o webhook estiver configurado.</p></details><details><summary>Posso criar o meu próprio jogo? <span>＋</span></summary><p>Sim! Clica em “Organizar um jogo” e indica modalidade, local, data, hora e contactos. A criação é encaminhada para o n8n após configuração.</p></details><details><summary>A plataforma é gratuita? <span>＋</span></summary><p>Explorar a plataforma não tem custos nesta demonstração. Eventuais preços de campos ou participações dependem do organizador e devem ser confirmados antes da inscrição.</p></details><details><summary>Quais são as modalidades disponíveis? <span>＋</span></summary><p>Futebol, futsal, basquetebol e padel. Mais modalidades poderão ser adicionadas.</p></details><details><summary>Como funciona o suporte? <span>＋</span></summary><p>O chat está preparado para enviar mensagens ao teu workflow n8n. Até configurares o webhook, mostra instruções em modo demonstração.</p></details></div></div></section>
+  </main>
+  <footer class="footer"><div class="container"><div class="footer-main"><div><a class="logo footer-logo" href="#topo"><span class="logo-mark">✳</span><span>Joga<span class="logo-contrast">Bonito</span>Tuga<span class="logo-dot">.</span></span></a><p>O desporto junta-nos.<br />O resto é conversa de balneário.</p></div><div class="footer-links"><div><strong>EXPLORA</strong><a href="#modalidades">Modalidades</a><a href="#jogos">Encontrar jogos</a><a href="#como-funciona">Como funciona</a></div><div><strong>AJUDA</strong><a href="#perguntas">Perguntas frequentes</a><button type="button" data-open-chat>Suporte</button></div></div></div><div class="footer-bottom"><span>© <span id="year"></span> JogaBonitoTuga. Feito para quem gosta de jogar.</span><span>MADE FOR THE GAME <span class="footer-star">✳</span> PORTUGAL</span></div></div></footer>
+  <button class="chat-launcher" id="chatLauncher" type="button" aria-controls="chatPanel" aria-expanded="false"><span class="chat-launch-icon">✳</span><span>Precisas de ajuda?</span><span>↗</span></button>
+  <section class="chat-panel" id="chatPanel" role="dialog" aria-label="Chat de suporte" aria-modal="false" hidden><div class="chat-header"><div class="chat-bot-icon">✳</div><div><strong>Equipa JogaBonito</strong><span><i></i> Assistente virtual</span></div><button type="button" class="icon-button" id="closeChat" aria-label="Fechar chat">×</button></div><div class="chat-body" id="chatMessages" aria-live="polite"><div class="chat-bubble bot">Boas! 👋 Sou a assistente da JogaBonitoTuga. Como posso ajudar-te hoje?</div></div><div class="chat-chips"><button type="button" data-chat-suggestion="Como encontro um jogo?">Encontrar jogo</button><button type="button" data-chat-suggestion="Como crio um jogo?">Criar jogo</button><button type="button" data-chat-suggestion="Como me inscrevo?">Inscrições</button></div><form id="chatForm" class="chat-form"><label class="sr-only" for="chatInput">Mensagem para o suporte</label><input id="chatInput" type="text" placeholder="Escreve a tua mensagem..." maxlength="1000" required /><button type="submit" id="chatSend" aria-label="Enviar mensagem">➤</button></form><div class="chat-footnote">Suporte automatizado via n8n quando configurado</div></section>
+  <div class="modal-backdrop" id="modalBackdrop" hidden><section class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle"><div class="modal-heading"><div><span class="section-kicker" id="modalKicker">VAMOS A ISSO</span><h2 id="modalTitle">Reserva o teu lugar</h2></div><button class="modal-close" id="closeModal" type="button" aria-label="Fechar">×</button></div><p class="modal-subtitle" id="modalSubtitle">Preenche os dados abaixo.</p><form id="actionForm"><input type="hidden" id="gameId" name="gameId" /><div id="createFields" hidden><div class="form-row"><label>Modalidade<select name="sport" id="createSport"><option>Futebol</option><option>Futsal</option><option>Basquetebol</option><option>Padel</option></select></label><label>Cidade<input name="city" id="createCity" placeholder="Ex.: Porto" maxlength="80" /></label></div><label>Campo / local<input name="venue" id="createVenue" placeholder="Ex.: Pavilhão Municipal" maxlength="120" /></label><div class="form-row"><label>Data<input name="date" id="createDate" type="date" /></label><label>Hora<input name="time" id="createTime" type="time" /></label></div><div class="form-row"><label>Jogadores necessários<input name="capacity" id="createCapacity" type="number" min="2" max="40" value="10" /></label><label>Preço por pessoa (€)<input name="price" id="createPrice" type="number" min="0" max="500" step="0.5" value="0" /></label></div></div><label>O teu nome<input type="text" id="personName" name="name" placeholder="Como te chamas?" maxlength="100" required /></label><label>Email<input type="email" id="personEmail" name="email" placeholder="tu@exemplo.pt" maxlength="150" required /></label><label>Telemóvel (opcional)<input type="tel" id="personPhone" name="phone" placeholder="9XX XXX XXX" maxlength="25" /></label><label class="consent-label"><input type="checkbox" id="consent" required /><span>Autorizo o envio destes dados para tratar o meu pedido. <small>Os dados são enviados para o workflow configurado pelo responsável do site.</small></span></label><div class="form-feedback" id="formFeedback" role="status"></div><button class="btn btn-primary submit-btn" type="submit" id="formSubmit">Enviar pedido ↗</button></form></section></div>
+</body>
+</html>
