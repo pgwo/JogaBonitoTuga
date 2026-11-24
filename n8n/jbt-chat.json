@@ -1,0 +1,94 @@
+{
+  "name": "JogaBonitoTuga - chat (DEMO)",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "jbt-chat",
+        "responseMode": "responseNode",
+        "options": {
+          "allowedOrigins": "*"
+        }
+      },
+      "id": "webhook-chat",
+      "name": "Webhook chat",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        240,
+        300
+      ],
+      "webhookId": "jbt-chat-webhook"
+    },
+    {
+      "parameters": {
+        "jsCode": "const raw = $input.first().json.body;\nconst body = typeof raw === 'string' ? JSON.parse(raw) : (raw || {});\nconst msg = String(body.message || '').trim().slice(0, 1000);\nlet reply = 'Olá! Posso ajudar-te a encontrar jogos de futebol, futsal, basquetebol e padel, ou a organizar uma partida. Para informações sobre uma inscrição, indica o jogo e o teu email (não partilhes palavras-passe).';\nconst q = msg.toLocaleLowerCase('pt-PT');\nif (!msg) reply = 'Escreve a tua pergunta para podermos ajudar.';\nelse if (/preç|cust|pagament|quanto/.test(q)) reply = 'O preço indicado em cada jogo é por pessoa. Confirma as condições com o organizador antes de pagar.';\nelse if (/inscri|reserv|particip|vaga/.test(q)) reply = 'Escolhe um jogo e clica em «Quero jogar». O teu pedido será enviado para análise; a inscrição só fica confirmada após resposta da organização.';\nelse if (/criar|organizar|publicar/.test(q)) reply = 'Clica em «Criar jogo», escolhe a modalidade, local, data, hora e número de participantes, e envia o pedido.';\nelse if (/cancel|desist/.test(q)) reply = 'Para cancelar, contacta a organização do jogo. Esta versão de demonstração ainda não tem cancelamentos automáticos.';\nreturn [{json:{reply,sessionId:String(body.sessionId||''),mode:'faq-demo'}}];"
+      },
+      "id": "logic-chat",
+      "name": "Lógica chat (DEMO)",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        480,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "respondWith": "firstIncomingItem",
+        "options": {
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "Access-Control-Allow-Origin",
+                "value": "*"
+              },
+              {
+                "name": "Content-Type",
+                "value": "application/json; charset=utf-8"
+              }
+            ]
+          }
+        }
+      },
+      "id": "respond-chat",
+      "name": "Resposta chat",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        720,
+        300
+      ]
+    }
+  ],
+  "connections": {
+    "Webhook chat": {
+      "main": [
+        [
+          {
+            "node": "Lógica chat (DEMO)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Lógica chat (DEMO)": {
+      "main": [
+        [
+          {
+            "node": "Resposta chat",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "active": false,
+  "pinData": {},
+  "tags": []
+}

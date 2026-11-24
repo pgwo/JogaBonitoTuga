@@ -5,7 +5,7 @@
  */
 window.JBT_CONFIG = {
   webhooks: {
-    chat: '',       // ex.: 'https://n8n.teudominio.pt/webhook/jbt-chat'
+    chat: 'https://pgwo.app.n8n.cloud/webhook/SUPORTE', // suporte n8n (URL de produção)
     booking: '',    // ex.: 'https://n8n.teudominio.pt/webhook/jbt-booking'
     createGame: '', // ex.: 'https://n8n.teudominio.pt/webhook/jbt-create-game'
     games: ''        // ex.: 'https://n8n.teudominio.pt/webhook/jbt-games' (GET)

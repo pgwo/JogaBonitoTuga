@@ -84,8 +84,8 @@
     const button = $('#formSubmit'); button.disabled = true; button.textContent = 'A enviar…';
     try {
       const result = await request(endpoint, payload);
-      if (typeof result === 'object' && result?.success === false) throw new Error('Pedido recusado');
-      setFeedback('Pedido enviado com sucesso! Aguarda a confirmação da organização.', 'success'); e.currentTarget.reset();
+      if (typeof result === 'object' && result?.success === false) throw new Error(result.message || 'Pedido recusado');
+      setFeedback((typeof result === 'object' && result?.message) || 'Pedido recebido. Aguarda a confirmação da organização.', 'success'); e.currentTarget.reset();
     } catch (err) { setFeedback('Não foi possível enviar. Verifica a ligação, a configuração do n8n e as permissões CORS.', 'error'); console.error('JBT webhook error:', err); }
     finally { button.disabled = false; button.textContent = modalMode === 'create' ? 'Criar jogo ↗' : 'Pedir inscrição ↗'; }
   });

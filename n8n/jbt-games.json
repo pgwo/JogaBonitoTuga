@@ -1,0 +1,94 @@
+{
+  "name": "JogaBonitoTuga - games (DEMO)",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "GET",
+        "path": "jbt-games",
+        "responseMode": "responseNode",
+        "options": {
+          "allowedOrigins": "*"
+        }
+      },
+      "id": "webhook-games",
+      "name": "Webhook games",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        240,
+        300
+      ],
+      "webhookId": "jbt-games-webhook"
+    },
+    {
+      "parameters": {
+        "jsCode": "const date=(n)=>{const d=new Date();d.setUTCDate(d.getUTCDate()+n);return d.toISOString().slice(0,10)};\n// DEMONSTRAÇÃO: substitui este nó por uma consulta à tua base de dados.\nreturn [{json:{games:[\n{id:'demo-n8n-01',title:'Futebol ao fim da tarde',sport:'Futebol',city:'Porto',venue:'Campo a confirmar',date:date(2),time:'19:30',spots:4,price:5},\n{id:'demo-n8n-02',title:'Futsal entre amigos',sport:'Futsal',city:'Lisboa',venue:'Pavilhão a confirmar',date:date(3),time:'20:00',spots:3,price:4},\n{id:'demo-n8n-03',title:'Padel para todos',sport:'Padel',city:'Braga',venue:'Clube a confirmar',date:date(4),time:'18:30',spots:2,price:8},\n{id:'demo-n8n-04',title:'Basquetebol de sábado',sport:'Basquetebol',city:'Coimbra',venue:'Pavilhão a confirmar',date:date(5),time:'11:00',spots:5,price:3}\n],demo:true}}];"
+      },
+      "id": "logic-games",
+      "name": "Lógica games (DEMO)",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        480,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "respondWith": "firstIncomingItem",
+        "options": {
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "Access-Control-Allow-Origin",
+                "value": "*"
+              },
+              {
+                "name": "Content-Type",
+                "value": "application/json; charset=utf-8"
+              }
+            ]
+          }
+        }
+      },
+      "id": "respond-games",
+      "name": "Resposta games",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        720,
+        300
+      ]
+    }
+  ],
+  "connections": {
+    "Webhook games": {
+      "main": [
+        [
+          {
+            "node": "Lógica games (DEMO)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Lógica games (DEMO)": {
+      "main": [
+        [
+          {
+            "node": "Resposta games",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "active": false,
+  "pinData": {},
+  "tags": []
+}
