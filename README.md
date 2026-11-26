@@ -138,3 +138,11 @@ As respostas do webhook `SUPORTE` são apresentadas com Markdown (negrito, lista
 O site carrega Marked e DOMPurify via jsDelivr; é necessária ligação à Internet para a formatação. Caso falhem, o chat apresenta texto simples sem executar HTML.
 As mensagens dos visitantes permanecem sempre texto simples. O HTML das respostas do assistente é sanitizado antes de ser inserido na página.
 Ao publicar no GitHub Pages, substitui os ficheiros `index.html`, `app.js` e `styles.css`. Conserva o `config.js` com o webhook SUPORTE configurado.
+
+
+### Correção adicional do Markdown (v2)
+- O chat interpreta `**negrito**` mesmo quando a biblioteca externa falha.
+- Normaliza `\n` e `\*\*` escapados por workflows do n8n.
+- Extrai a resposta de `reply`, `output`, `message`, `text`, `response` ou `answer` (incluindo JSON em texto).
+- Continua a sanitizar HTML das respostas e a manter mensagens dos visitantes como texto simples.
+- Depois de publicar no GitHub Pages, faz atualização forçada do navegador (Ctrl+Shift+R).

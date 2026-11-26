@@ -95,23 +95,82 @@
   chatLauncher.addEventListener('click', () => chatPanel.hidden ? openChat() : closeChat());
   $('#closeChat').addEventListener('click', closeChat);
   $$('[data-open-chat]').forEach(b => b.addEventListener('click', openChat));
-  // A mensagem do visitante é sempre apresentada como texto. Apenas as respostas
-  // do assistente podem ser convertidas de Markdown, depois de sanitizadas.
+  // Normaliza respostas de n8n que chegam com quebras de linha ou asteriscos
+  // escapados (ex.: "\\n", "\\*\\*negrito\\*\\*").
+  function normalizeAssistantText(value) {
+    let text = String(value ?? '');
+    // Alguns workflows devolvem uma string JSON serializada duas vezes.
+    for (let i = 0; i < 2; i++) {
+      const trimmed = text.trim();
+      if (trimmed.startsWith('"') && trimmed.endsWith('"')) {
+        try { const parsed = JSON.parse(trimmed); if (typeof parsed === 'string') { text = parsed; continue; } } catch {}
+      }
+      break;
+    }
+    text = text.replace(/\\r\\n|\\n|\\r/g, '\n').replace(/\\\*/g, '*');
+    // Tolera pequenas imperfeições frequentes nas respostas geradas por IA.
+    text = text.replace(/\*\*\s+([^\n*][^\n]*?)\s+\*\*/g, '**$1**');
+    return text;
+  }
+  // Fallback seguro: caso as bibliotecas externas não carreguem, pelo menos
+  // **negrito** e quebras de linha continuam a aparecer formatados.
+  function renderBasicMarkdown(node, text) {
+    const chunks = text.split(/(\*\*[^*\n]+\*\*)/g);
+    const lines = document.createElement('span');
+    chunks.forEach(chunk => {
+      if (chunk.startsWith('**') && chunk.endsWith('**') && chunk.length > 4) {
+        const strong = document.createElement('strong');
+        strong.textContent = chunk.slice(2, -2);
+        lines.appendChild(strong);
+      } else {
+        const parts = chunk.split('\n');
+        parts.forEach((part, i) => {
+          if (i) lines.appendChild(document.createElement('br'));
+          lines.appendChild(document.createTextNode(part));
+        });
+      }
+    });
+    node.replaceChildren(lines);
+  }
+  // Mensagens dos visitantes são sempre texto simples. Apenas as mensagens
+  // do Jacinto são convertidas de Markdown e sanitizadas antes de exibir.
   function renderAssistantMessage(node, message) {
-    const text = String(message ?? '');
+    const text = normalizeAssistantText(message);
     if (!window.marked || !window.DOMPurify) {
-      node.textContent = text; // fallback seguro se a CDN não estiver disponível
+      renderBasicMarkdown(node, text);
       return;
     }
-    const html = window.marked.parse(text, { breaks: true, gfm: true });
-    node.innerHTML = window.DOMPurify.sanitize(html, {
-      ALLOWED_TAGS: ['p', 'br', 'strong', 'b', 'em', 'i', 'ul', 'ol', 'li', 'a', 'code', 'pre', 'blockquote', 'del'],
-      ALLOWED_ATTR: ['href', 'title']
-    });
-    node.querySelectorAll('a').forEach(link => {
-      link.target = '_blank';
-      link.rel = 'noopener noreferrer';
-    });
+    try {
+      const html = window.marked.parse(text, { breaks: true, gfm: true });
+      node.innerHTML = window.DOMPurify.sanitize(html, {
+        ALLOWED_TAGS: ['p', 'br', 'strong', 'b', 'em', 'i', 'ul', 'ol', 'li', 'a', 'code', 'pre', 'blockquote', 'del'],
+        ALLOWED_ATTR: ['href', 'title']
+      });
+      node.querySelectorAll('a').forEach(link => {
+        link.target = '_blank';
+        link.rel = 'noopener noreferrer';
+      });
+    } catch (error) {
+      console.warn('Falha a interpretar Markdown; a usar modo básico.', error);
+      renderBasicMarkdown(node, text);
+    }
+  }
+  function extractChatAnswer(result) {
+    if (typeof result === 'string') {
+      const text = result.trim();
+      if (text.startsWith('{') || text.startsWith('[')) {
+        try { return extractChatAnswer(JSON.parse(text)); } catch {}
+      }
+      return result;
+    }
+    if (Array.isArray(result)) return extractChatAnswer(result[0]);
+    if (result && typeof result === 'object') {
+      for (const key of ['reply', 'output', 'message', 'text', 'response', 'answer']) {
+        if (typeof result[key] === 'string') return result[key];
+        if (result[key] && typeof result[key] === 'object') return extractChatAnswer(result[key]);
+      }
+    }
+    return 'Recebi a tua mensagem, mas o workflow não devolveu uma resposta de texto.';
   }
   function addMessage(message, from) {
     const node = element('div', 'chat-bubble ' + from);
@@ -133,7 +192,7 @@
     const thinking = addMessage('A escrever…', 'bot');
     try {
       const result = await request(cfg.chat, { action:'chat', source:'JogaBonitoTuga', sessionId, message:message.trim(), timestamp:new Date().toISOString() });
-      const content = typeof result === 'string' ? result : (result?.reply || result?.output || result?.message || result?.text || result?.response || (Array.isArray(result) && result[0]?.output) || 'Recebi a tua mensagem, mas o workflow não devolveu uma resposta de texto.');
+      const content = extractChatAnswer(result);
       renderAssistantMessage(thinking, content);
     } catch (err) { thinking.textContent = 'O suporte está temporariamente indisponível. Volta a tentar mais tarde.'; console.error('JBT chat webhook error:', err); }
     finally { send.disabled = false; $('#chatMessages').scrollTop = $('#chatMessages').scrollHeight; }
