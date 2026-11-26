@@ -130,3 +130,11 @@ A pasta `n8n/` inclui **quatro workflows JSON importáveis**:
 **Importante:** estes workflows não enviam email, não criam reservas reais e não guardam dados numa base de dados. Os pedidos podem constar do histórico de execuções, dependendo da política de retenção da tua instância. Para produção, substitui os nós `Lógica ... (DEMO)` por validações, base de dados, controlo atómico de vagas, autenticação/antispam e notificações. O frontend mostra agora a mensagem real devolvida pelo webhook.
 
 Os nós de resposta incluem `Access-Control-Allow-Origin: *` para testes. Antes de lançar, limita as origens permitidas ao domínio do teu site e verifica as definições CORS/reverse proxy da tua instalação n8n. Não exponhas webhooks de operações sensíveis sem controlos adicionais.
+
+
+## Markdown no chat de suporte
+
+As respostas do webhook `SUPORTE` são apresentadas com Markdown (negrito, listas, parágrafos, links e código).
+O site carrega Marked e DOMPurify via jsDelivr; é necessária ligação à Internet para a formatação. Caso falhem, o chat apresenta texto simples sem executar HTML.
+As mensagens dos visitantes permanecem sempre texto simples. O HTML das respostas do assistente é sanitizado antes de ser inserido na página.
+Ao publicar no GitHub Pages, substitui os ficheiros `index.html`, `app.js` e `styles.css`. Conserva o `config.js` com o webhook SUPORTE configurado.

@@ -95,7 +95,32 @@
   chatLauncher.addEventListener('click', () => chatPanel.hidden ? openChat() : closeChat());
   $('#closeChat').addEventListener('click', closeChat);
   $$('[data-open-chat]').forEach(b => b.addEventListener('click', openChat));
-  function addMessage(message, from) { const node = element('div', 'chat-bubble ' + from, message); $('#chatMessages').append(node); $('#chatMessages').scrollTop = $('#chatMessages').scrollHeight; return node; }
+  // A mensagem do visitante é sempre apresentada como texto. Apenas as respostas
+  // do assistente podem ser convertidas de Markdown, depois de sanitizadas.
+  function renderAssistantMessage(node, message) {
+    const text = String(message ?? '');
+    if (!window.marked || !window.DOMPurify) {
+      node.textContent = text; // fallback seguro se a CDN não estiver disponível
+      return;
+    }
+    const html = window.marked.parse(text, { breaks: true, gfm: true });
+    node.innerHTML = window.DOMPurify.sanitize(html, {
+      ALLOWED_TAGS: ['p', 'br', 'strong', 'b', 'em', 'i', 'ul', 'ol', 'li', 'a', 'code', 'pre', 'blockquote', 'del'],
+      ALLOWED_ATTR: ['href', 'title']
+    });
+    node.querySelectorAll('a').forEach(link => {
+      link.target = '_blank';
+      link.rel = 'noopener noreferrer';
+    });
+  }
+  function addMessage(message, from) {
+    const node = element('div', 'chat-bubble ' + from);
+    if (from === 'bot') renderAssistantMessage(node, message);
+    else node.textContent = String(message);
+    $('#chatMessages').append(node);
+    $('#chatMessages').scrollTop = $('#chatMessages').scrollHeight;
+    return node;
+  }
   const sessionKey = 'jbt_chat_session';
   let sessionId;
   try { sessionId = sessionStorage.getItem(sessionKey) || (globalThis.crypto?.randomUUID?.() || `session-${Date.now()}`); sessionStorage.setItem(sessionKey, sessionId); }
@@ -109,7 +134,7 @@
     try {
       const result = await request(cfg.chat, { action:'chat', source:'JogaBonitoTuga', sessionId, message:message.trim(), timestamp:new Date().toISOString() });
       const content = typeof result === 'string' ? result : (result?.reply || result?.output || result?.message || result?.text || result?.response || (Array.isArray(result) && result[0]?.output) || 'Recebi a tua mensagem, mas o workflow não devolveu uma resposta de texto.');
-      thinking.textContent = String(content);
+      renderAssistantMessage(thinking, content);
     } catch (err) { thinking.textContent = 'O suporte está temporariamente indisponível. Volta a tentar mais tarde.'; console.error('JBT chat webhook error:', err); }
     finally { send.disabled = false; $('#chatMessages').scrollTop = $('#chatMessages').scrollHeight; }
   }
